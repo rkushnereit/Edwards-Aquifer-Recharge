@@ -74,6 +74,16 @@ def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
             else:
                 discharge_df.ix[i,['baseflow']] = None
 
+    # if Separation_Method == 'IOH_Modified':
+    #     for i in range(0, len(discharge_df['Discharge'])-1):
+    #         if (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
+    #             discharge_df.ix[i,['baseflow']] = discharge_df.iloc[i]['Discharge']
+    #         else:
+    #             discharge_df.ix[i,['baseflow']] = None
+    #     for i in range(0, len(discharge_df['Discharge'])-1):
+    #         if (discharge_df.loc[i]['Discharge'] * (k**i) <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
+    #
+
     elif Separation_Method == 'Chapman':
         for i in range(0, len(discharge_df['Discharge'])):
             if (((k / (2 - k)) * discharge_df.iloc[i - 1]['Discharge']) + ((1 - k) / (2 - k) * discharge_df.iloc[i]['Discharge'])) >= discharge_df.iloc[i]['Discharge']:

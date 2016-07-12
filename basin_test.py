@@ -4,7 +4,7 @@ import pandas as pd
 
 
 
-discharge_data = 'USGS 08169000 Comal Rv at New Braunfels, TX 2015.csv'
+discharge_data = 'Nueces_river_Uv_2015_discharge.csv'
 
 Basins.Rainfall_data(basin_csv=pd.read_csv('Basin_1Lower.csv'),year=2015,ET_input=0)
 
@@ -14,6 +14,9 @@ Basins.BFI_solver(Separation_Method='IOH',k=.979150,C=0,gamma=0)
 
 
 #this is a test for git
+
+
+#this is a second line added to test git
 
 
 
