@@ -5,7 +5,13 @@ style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 #
 # def Basin(River_Basin, BFI_Filter, year, Rainfall, DS_gage,Up_gage1):
 #      fgh =0
-     
+
+def SiteID(USGS_site_ID,year):
+    global site_ID
+    site_ID = USGS_site_ID
+    df = pd.read_table('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='+str(site_ID)+'&referred_module=sw&period=&begin_date='+str(year)+'-01-01&end_date='+str(year)+'-12-31',skiprows=26,index_col=2)
+    print(df.head())
+
 def Rainfall_data(basin_csv,year, ET_input = 0):
     global ET
     global Precip
