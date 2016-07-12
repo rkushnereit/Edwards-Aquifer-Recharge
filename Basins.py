@@ -66,7 +66,6 @@ def downstream_gage(discharge_data):
 def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
 
     discharge_df['baseflow'] = 0#discharge_df[[1]]
-
     if Separation_Method == 'IOH':
         for i in range(0, len(discharge_df['Discharge'])-1):
             if (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
