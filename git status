@@ -1,0 +1,65 @@
+[33mcommit 374b18f9221dc66a9b38111088c3a2c8ae3ad90a[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 16:16:51 2016 -0500
+
+    Worked on Basin.py, added a direct pull from the USGS sites online to create dataframes without having to use a text file, or a csv. Note, this may slow down the process but not by much if the internet speed is decent.
+
+[33mcommit 4082e31b3816d7462fbd7fa30740a8687fae79f1[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 15:52:59 2016 -0500
+
+    Worked on Basin.py, added a direct pull from the USGS sites online to create dataframes without having to use a text file, or a csv. Note, this may slow down the process but not by much if the internet speed is decent.
+
+[33mcommit 246ba897980200ca79ebabc0841728e2c4c8bbe8[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 15:51:49 2016 -0500
+
+    Worked on Basin.py, added a direct pull from the USGS sites online to create dataframes without having to use a text file, or a csv. Note, this may slow down the process but not by much if the internet speed is decent.
+
+[33mcommit e63e312004ab3a2b297fae2602ceb3b25913a9ec[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 15:48:37 2016 -0500
+
+    Worked on Basin.py, added a direct pull from the USGS sites online to create dataframes without having to use a text file, or a csv. Note, this may slow down the process but not by much if the internet speed is decent.
+
+[33mcommit b2522cf2882f5818f6e391b2f63e608c86051a7d[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 15:48:23 2016 -0500
+
+    Worked on Basin.py, added a direct pull from the USGS sites online to create dataframes without having to use a text file, or a csv. Note, this may slow down the process but not by much if the internet speed is decent.
+
+[33mcommit 1ccbc8fa555d64f4607b2cb4ed973d2ccd67f042[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 07:57:07 2016 -0500
+
+    Small editing, moved, deleted line.
+
+[33mcommit 583daee325b55be5f41d4630f1194ac356cd414a[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 07:49:12 2016 -0500
+
+    trying git again
+
+[33mcommit 139e5e4dec0e85d25688dc7cd6399487100aab87[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Tue Jul 12 07:47:35 2016 -0500
+
+    Worked on the Modified Institute of hydrology method for baseflow seperation
+
+[33mcommit 8a6629dd0b8c60f2ba0752b6b1ef66600f3eb356[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Mon Jul 11 19:14:54 2016 -0500
+
+    Worked on the Modified Institute of hydrology method for baseflow seperation
+
+[33mcommit c406a16e17403c02365042cbb89fd851fe39f735[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Mon Jul 11 13:41:11 2016 -0500
+
+    First use of git
+
+[33mcommit b15175e20a8686525a3b83d1796c16e42f6d2fa8[m
+Author: Ross Kurt Kushnereit <rkushnereit@usgs.gov>
+Date:   Mon Jul 11 13:26:03 2016 -0500
+
+    This is a line added to the end of the script to test git
