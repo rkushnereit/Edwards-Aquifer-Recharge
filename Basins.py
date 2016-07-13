@@ -2,9 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import style
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
+
 #
 # def Basin(River_Basin, BFI_Filter, year, Rainfall, DS_gage,Up_gage1):
 #      fgh =0
+
+# def Master(year):
+#     year
 
 def SiteID(USGS_site_ID,year):
     global site_ID
@@ -17,6 +21,7 @@ def Rainfall_data(basin_csv,year, ET_input = 0):
     global Precip
     global area
     ET = ET_input
+    basin_csv = pd.read_csv(basin_csv)
 
     Weighted_basin_csv = basin_csv
     for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
@@ -138,7 +143,6 @@ def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
     recharge = (BFI * ((Precip - ET)/12) * area) *(2.29568*(10**(-5)))
     print('The estimated recharge using the ' + str(Separation_Method) + ' method, and a k value of ' + str(k) + ' is ' , recharge , ' acre-ft')
     discharge_df['Fld_Flw'] = None
-    #discharge_df['Specific_conductance'] = df['Specific_conductance']
     ax = discharge_df.plot(title= station_name + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('discharge_cfs', fontsize=12)
