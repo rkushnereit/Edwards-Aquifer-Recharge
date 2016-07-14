@@ -6,28 +6,6 @@ style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=0,gamma=0):
     discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=26)
     print(discharge_data.head())
-    # discharge_data['date'] = discharge_df[2]
-    # discharge_data['discharge'] = discharge_df[3]
-    #site_ID = USGS_site_ID
-    # USGS_site_ID = '0819200'
-    # year = 2015
-    #df = pd.read_table()
-    #def siteID(USGS_site_ID,year):
-        #global site_ID
-    #site_ID = USGS_site_ID
-
-    #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='08192000'&referred_module=sw&period=&begin_date='2015'-07-12&end_date='2016'-07-11')
-        #discharge_data = pd.DataFrame()
-
-
-    #return(discharge_df.head())
-#discharge_df
-    #siteID(USGS_site_ID, year)
-    #def rainfall_data(basin_csv,year, ET_input = 0):
-    # global ET
-    # global Precip
-    # global area
-
     basin_csv = pd.read_csv(basin_csv)
     Weighted_basin_csv = basin_csv
     for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
@@ -68,21 +46,12 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
     print('The square footage of this basin is ' + str(sum_Area_basin_csv) + ' ft^2')
     print('The Precipitation for the year '+str(year) +' is ' +str(yearly_total_basin_csv) + ' inches.')
 
-#def downstream_gage(discharge_data):
-    #global station_name
-    #station_name = discharge_data
-    #discharge_data = pd.read_csv(discharge_data)
-    #global discharge_df
     discharge_df = pd.DataFrame()
     discharge_df = discharge_df.reset_index(drop=True)
     discharge_df['Date'] = discharge_data[[2]]
     discharge_df['Discharge'] = discharge_data[[3]]
     discharge_df = discharge_df.set_index(pd.DatetimeIndex(discharge_df['Date']))
-
-
-#def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
-
-    discharge_df['baseflow'] = 0#discharge_df[[1]]
+    discharge_df['baseflow'] = 0
     if Separation_Method == 'IOH':
         for i in range(0, len(discharge_df['Discharge'])-1):
             if (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
