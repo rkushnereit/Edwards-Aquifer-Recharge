@@ -2,28 +2,30 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import style
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
-#Added this extra line in to test git push --force
-#added this line to try to push to git with pycharm
-#
-# def Basin(River_Basin, BFI_Filter, year, Rainfall, DS_gage,Up_gage1):
-#      fgh =0
 
-# def Master(year):
-#     year
+def master(USGS_site_ID='0819200', year=2014, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=0,gamma=0):
+    # USGS_site_ID = '0819200'
+    # year = 2015
+    #df = pd.read_table()
+    #def siteID(USGS_site_ID,year):
+        #global site_ID
+    #site_ID = USGS_site_ID
+    discharge_data = pd.read_table('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='+str(USGS_site_ID)+'&referred_module=sw&period=&begin_date='+str(year)+'-01-01&end_date='+str(year)+'-12-31',skiprows=26)
 
-def SiteID(USGS_site_ID,year):
-    global site_ID
-    site_ID = USGS_site_ID
-    df = pd.read_table('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='+str(site_ID)+'&referred_module=sw&period=&begin_date='+str(year)+'-01-01&end_date='+str(year)+'-12-31',skiprows=26,index_col=2)
-    print(df.head())
+    #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='08192000'&referred_module=sw&period=&begin_date='2015'-07-12&end_date='2016'-07-11')
+        #discharge_data = pd.DataFrame()
+        #discharge_data['date'] = discharge_df[2]
+        #discharge_data['discharge'] = discharge_df[3]
 
-def Rainfall_data(basin_csv,year, ET_input = 0):
-    global ET
-    global Precip
-    global area
+    #return(discharge_df.head())
+#discharge_df
+    #siteID(USGS_site_ID, year)
+    #def rainfall_data(basin_csv,year, ET_input = 0):
+    # global ET
+    # global Precip
+    # global area
     ET = ET_input
     basin_csv = pd.read_csv(basin_csv)
-
     Weighted_basin_csv = basin_csv
     for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
         Weighted_basin_csv.ix[i,['Jan-15']] = basin_csv.iloc[i]['Jan-15'] * basin_csv.iloc[i]['Shape_Area']
@@ -63,19 +65,19 @@ def Rainfall_data(basin_csv,year, ET_input = 0):
     print('The square footage of this basin is ' + str(sum_Area_basin_csv) + ' ft^2')
     print('The Precipitation for the year '+str(year) +' is ' +str(yearly_total_basin_csv) + ' inches.')
 
-def downstream_gage(discharge_data):
-    global station_name
-    station_name = discharge_data
-    discharge_data = pd.read_csv(discharge_data)
-    global discharge_df
+#def downstream_gage(discharge_data):
+    #global station_name
+    #station_name = discharge_data
+    #discharge_data = pd.read_csv(discharge_data)
+    #global discharge_df
     discharge_df = pd.DataFrame()
     discharge_df = discharge_df.reset_index(drop=True)
-    discharge_df['Date'] = discharge_data[[0]]
-    discharge_df['Discharge'] = discharge_data[[1]]
+    discharge_df['Date'] = discharge_data[[2]]
+    discharge_df['Discharge'] = discharge_data[[3]]
     discharge_df = discharge_df.set_index(pd.DatetimeIndex(discharge_df['Date']))
 
 
-def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
+#def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
 
     discharge_df['baseflow'] = 0#discharge_df[[1]]
     if Separation_Method == 'IOH':
@@ -93,7 +95,7 @@ def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
     #             discharge_df.ix[i,['baseflow']] = None
     #     for i in range(0, len(discharge_df['Discharge'])-1):
     #         if (discharge_df.loc[i]['Discharge'] * (k**i) <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
-    #
+
 
     elif Separation_Method == 'Chapman':
         for i in range(0, len(discharge_df['Discharge'])):
@@ -144,7 +146,7 @@ def BFI_solver(Separation_Method,k=.7531,C=0,gamma=0):
     recharge = (BFI * ((Precip - ET)/12) * area) *(2.29568*(10**(-5)))
     print('The estimated recharge using the ' + str(Separation_Method) + ' method, and a k value of ' + str(k) + ' is ' , recharge , ' acre-ft')
     discharge_df['Fld_Flw'] = None
-    ax = discharge_df.plot(title= station_name + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
+    ax = discharge_df.plot(title= USGS_site_ID + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('discharge_cfs', fontsize=12)
     plt.show()
