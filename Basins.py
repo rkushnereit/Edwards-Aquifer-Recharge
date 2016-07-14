@@ -3,19 +3,22 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 
-def master(USGS_site_ID='0819200', year=2014, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=0,gamma=0):
+def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=0,gamma=0):
+    discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=26)
+    print(discharge_data.head())
+    # discharge_data['date'] = discharge_df[2]
+    # discharge_data['discharge'] = discharge_df[3]
+    #site_ID = USGS_site_ID
     # USGS_site_ID = '0819200'
     # year = 2015
     #df = pd.read_table()
     #def siteID(USGS_site_ID,year):
         #global site_ID
     #site_ID = USGS_site_ID
-    discharge_data = pd.read_table('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='+str(USGS_site_ID)+'&referred_module=sw&period=&begin_date='+str(year)+'-01-01&end_date='+str(year)+'-12-31',skiprows=26)
 
     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no='08192000'&referred_module=sw&period=&begin_date='2015'-07-12&end_date='2016'-07-11')
         #discharge_data = pd.DataFrame()
-        #discharge_data['date'] = discharge_df[2]
-        #discharge_data['discharge'] = discharge_df[3]
+
 
     #return(discharge_df.head())
 #discharge_df
@@ -24,7 +27,7 @@ def master(USGS_site_ID='0819200', year=2014, basin_csv='#', ET_input = 0, Separ
     # global ET
     # global Precip
     # global area
-    ET = ET_input
+
     basin_csv = pd.read_csv(basin_csv)
     Weighted_basin_csv = basin_csv
     for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
@@ -143,7 +146,7 @@ def master(USGS_site_ID='0819200', year=2014, basin_csv='#', ET_input = 0, Separ
 
     del discharge_df['Date']
     BFI = (discharge_df['baseflow'].sum())/(discharge_df['baseflow'].sum() +discharge_df['Discharge'].sum())
-    recharge = (BFI * ((Precip - ET)/12) * area) *(2.29568*(10**(-5)))
+    recharge = (BFI * ((Precip - ET_input)/12) * area) *(2.29568*(10**(-5)))
     print('The estimated recharge using the ' + str(Separation_Method) + ' method, and a k value of ' + str(k) + ' is ' , recharge , ' acre-ft')
     discharge_df['Fld_Flw'] = None
     ax = discharge_df.plot(title= USGS_site_ID + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
