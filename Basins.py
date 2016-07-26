@@ -3,9 +3,14 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 
-def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=0,gamma=0):
-    discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=26)
+def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=.2469,gamma=0):
+    discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=25)
+    discharge_data = discharge_data[discharge_data['agency_cd'] != '5s']
+    #discharge_data = discharge_data.drop([0])
+    #C = 1-k
+    discharge_data.reset_index(drop = True,inplace = True)
     print(discharge_data.head())
+    print(discharge_data.tail())
     basin_csv = pd.read_csv(basin_csv)
     Weighted_basin_csv = basin_csv
     for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
@@ -49,12 +54,17 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
     discharge_df = pd.DataFrame()
     discharge_df = discharge_df.reset_index(drop=True)
     discharge_df['Date'] = discharge_data[[2]]
-    discharge_df['Discharge'] = discharge_data[[3]]
+    discharge_df['Discharge'] = discharge_data[[3]].astype(float)
     discharge_df = discharge_df.set_index(pd.DatetimeIndex(discharge_df['Date']))
-    discharge_df['baseflow'] = 0
+    discharge_df['baseflow'] = 0.0
+    print(discharge_df.head())
+    print(discharge_df.dtypes)
+
     if Separation_Method == 'IOH':
+        i=363
+        print(float(discharge_df.iloc[i]['Discharge']) * k)
         for i in range(0, len(discharge_df['Discharge'])-1):
-            if (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i - 1]['Discharge']) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
+            if (discharge_df.iloc[i]['Discharge'] * k <= (discharge_df.iloc[i - 1]['Discharge'])) & (discharge_df.iloc[i]['Discharge'] * k <= discharge_df.iloc[i + 1]['Discharge']):
                 discharge_df.ix[i,['baseflow']] = discharge_df.iloc[i]['Discharge']
             else:
                 discharge_df.ix[i,['baseflow']] = None
@@ -70,7 +80,7 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
 
 
     elif Separation_Method == 'Chapman':
-        for i in range(0, len(discharge_df['Discharge'])):
+        for i in range(0, len(discharge_df['Discharge'])-1):
             if (((k / (2 - k)) * discharge_df.iloc[i - 1]['Discharge']) + ((1 - k) / (2 - k) * discharge_df.iloc[i]['Discharge'])) >= discharge_df.iloc[i]['Discharge']:
                 discharge_df.ix[i,['baseflow']] = discharge_df.iloc[i]['Discharge']
             else:
@@ -85,7 +95,7 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
                 discharge_df.ix[i,['baseflow']] = None
 
     elif Separation_Method == 'IHACRES':
-        for i in range(0, len(discharge_df['Discharge'])):
+        for i in range(0, len(discharge_df['Discharge'])-1):
             if ((k / (1 + C)) * discharge_df.iloc[i - 1]['Discharge']) + (C / (1 + C) * (
                 discharge_df.iloc[i]['Discharge'] + gamma * discharge_df.iloc[i - 1]['Discharge'])) >= \
                     discharge_df.iloc[i]['Discharge']:
@@ -94,10 +104,9 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
                 discharge_df.ix[i,['baseflow']] = None
 
     elif Separation_Method == 'L&H':
-        for i in range(0, len(discharge_df['Discharge'])):
+        for i in range(0, len(discharge_df['Discharge'])-1):
             discharge_df.ix[i,['baseflow']] = discharge_df.iloc[i]['Discharge']
-            if (gamma * discharge_df.iloc[i - 1]['Discharge']) + (
-                discharge_df.iloc[i]['Discharge'] - discharge_df.iloc[i - 1]['Discharge']) * ((1 + gamma) / 2) <= 0:
+            if (gamma * discharge_df.iloc[i - 1]['Discharge']) + (discharge_df.iloc[i]['Discharge'] - discharge_df.iloc[i - 1]['Discharge']) * ((1 + gamma) / 2) <= 0.0:
                 discharge_df['baseflow'] = discharge_df.iloc[i]['Discharge']
             else:
                 discharge_df['baseflow'] = None
@@ -109,7 +118,7 @@ def master(USGS_site_ID= ('08192000'), year=1978, basin_csv='#', ET_input = 0, S
     discharge_df.ix[int(len(discharge_df))-1, ['baseflow']] = discharge_df.iloc[int(len(discharge_df))-1]['Discharge']
     discharge_df['baseflow'] = discharge_df['baseflow'].interpolate(method='linear')
     for i in range(0, len(discharge_df['Discharge'])):
-        if (discharge_df.iloc[i]['baseflow'] > discharge_df.iloc[i]['Discharge']):
+        if ((discharge_df.iloc[i]['baseflow']) > float(discharge_df.iloc[i]['Discharge'])):
             discharge_df.ix[i,['baseflow']] = discharge_df.iloc[i]['Discharge']
 
 
