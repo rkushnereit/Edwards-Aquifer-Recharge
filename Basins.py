@@ -1,9 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import style
+import time
+start_time = time.time()
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 
-def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=.2469,gamma=0):
+def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=.2469,gamma=0, Basin = 'Nueces'):
     discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=25)
     discharge_data = discharge_data[discharge_data['agency_cd'] != '5s']
     #discharge_data = discharge_data.drop([0])
@@ -127,6 +129,7 @@ def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, 
     recharge = (BFI * ((Precip - ET_input)/12) * area) *(2.29568*(10**(-5)))
     print('The estimated recharge using the ' + str(Separation_Method) + ' method, and a k value of ' + str(k) + ' is ' , recharge , ' acre-ft')
     discharge_df['Fld_Flw'] = None
+    print("--- %s seconds ---" % (time.time() - start_time))
     ax = discharge_df.plot(title= USGS_site_ID + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('discharge_cfs', fontsize=12)
