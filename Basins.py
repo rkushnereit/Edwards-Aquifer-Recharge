@@ -5,7 +5,17 @@ import time
 start_time = time.time()
 style.use(['fivethirtyeight','ggplot']) #,'dark_background'
 
-def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, Separation_Method = 'IOH',k=.7531,C=.2469,gamma=0, Basin = 'Nueces'):
+def master(Basin_name = 'Nueces', year=2015, ET_input = 0, Separation_Method = 'IOH',k=.7531,C=.2469,gamma=0, basin_csv='#',USGS_site_ID = ('08192000')):
+
+    basin_df = pd.read_csv('Gauge_to_basin_table.csv')
+    basin_df = basin_df.set_index(basin_df['Basin'])
+    print(basin_df)
+
+
+    site_id = basin_df.loc[Basin_name]['Lower_Gauge_ID']
+    site_id = str(site_id.replace('"', ''))
+    USGS_site_ID = site_id
+
     discharge_data = pd.read_table(('http://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=rdb&site_no=' + str(USGS_site_ID) + '&referred_module=sw&period=&begin_date=' + str(year) + '-01-01&end_date=' + str(year) + '-12-31'), skiprows=25)
     discharge_data = discharge_data[discharge_data['agency_cd'] != '5s']
     #discharge_data = discharge_data.drop([0])
@@ -13,9 +23,14 @@ def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, 
     discharge_data.reset_index(drop = True,inplace = True)
     print(discharge_data.head())
     print(discharge_data.tail())
+
+    basin_csv = basin_df.loc[Basin_name]['Lower_Basin_ID']
+    basin_csv = str(basin_csv.replace('"', '') + '.csv')
+    # print(basin_csv)
+    Weighted_basin_csv = pd.read_csv(basin_csv)
+    # print(Weighted_basin_csv.head())
     basin_csv = pd.read_csv(basin_csv)
-    Weighted_basin_csv = basin_csv
-    for i in range(0, Weighted_basin_csv['Jan-15'].shape[0] - 1):
+    for i in range(0, len(Weighted_basin_csv['Jan-15']) - 1):
         Weighted_basin_csv.ix[i,['Jan-15']] = basin_csv.iloc[i]['Jan-15'] * basin_csv.iloc[i]['Shape_Area']
         Weighted_basin_csv.ix[i,['Feb-15']] = basin_csv.iloc[i]['Feb-15'] * basin_csv.iloc[i]['Shape_Area']
         Weighted_basin_csv.ix[i,['Mar-15']] = basin_csv.iloc[i]['Mar-15'] * basin_csv.iloc[i]['Shape_Area']
@@ -125,12 +140,14 @@ def master(USGS_site_ID = ('08192000'), year=1978, basin_csv='#', ET_input = 0, 
 
 
     del discharge_df['Date']
-    BFI = (discharge_df['baseflow'].sum())/(discharge_df['baseflow'].sum() +discharge_df['Discharge'].sum())
-    recharge = (BFI * ((Precip - ET_input)/12) * area) *(2.29568*(10**(-5)))
+    BFI = (discharge_df['baseflow'].sum())/(discharge_df['baseflow'].sum() + discharge_df['Discharge'].sum())
+    print(BFI)
+    recharge = (BFI * ((Precip - ET_input)/12) * area)
+    recharge = recharge * (2.29568*(10**(-5))) # convert to acre-ft
     print('The estimated recharge using the ' + str(Separation_Method) + ' method, and a k value of ' + str(k) + ' is ' , recharge , ' acre-ft')
     discharge_df['Fld_Flw'] = None
     print("--- %s seconds ---" % (time.time() - start_time))
-    ax = discharge_df.plot(title= USGS_site_ID + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
+    ax = discharge_df.plot(title= basin_df.loc[Basin_name]['Lower_Guage_name'] + ', k = ' + str(k), figsize=(15, 10), legend=True, fontsize=12)
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('discharge_cfs', fontsize=12)
     plt.show()

@@ -1,4 +1,4 @@
 Basin,Lower_Gauge_ID,Lower_Guage_name,Lower_Basin_ID,Upper_Gauge1_ID,Upper_Gauge1_name,Upper_Basin1_ID,Upper_Gauge2_ID,Upper_Gauge2_name,Upper_Basin2_ID
-Nueces,"""08192000""","USGS 08192000 Nueces Rv bl Uvalde, TX",Basin1_Lower,"""08190000""","USGS 08190000 Nueces Rv at Laguna, TX",Basin1_Upper,"""08190500""","USGS 08190500 W Nueces Rv nr Brackettville, TX",Basin1_Upper
-Frio,"""08197500""","USGS 08197500 Frio Rv bl Dry Frio Rv nr Uvalde, TX",Basin2_Lower,"""08195000""","USGS 08195000 Frio Rv at Concan, TX",Basin2_Upper,"""08196000""","USGS 08196000 Dry Frio Rv nr Reagan Wells, TX",Basin2_Upper
-Sabinal,"""08198000""","USGS 08198000 Sabinal Rv nr Sabinal, TX",Basin3_Lower,"""08198500""","USGS 08198500 Sabinal Rv at Sabinal, TX",Basin3_Upper,,,
+Nueces,"""08192000""","USGS 08192000 Nueces Rv bl Uvalde, TX",Basin_1Lower,"""08190000""","USGS 08190000 Nueces Rv at Laguna, TX",Basin1_Upper,"""08190500""","USGS 08190500 W Nueces Rv nr Brackettville, TX",Basin1_Upper
+Frio,"""08197500""","USGS 08197500 Frio Rv bl Dry Frio Rv nr Uvalde, TX",Basin_1Lower,"""08195000""","USGS 08195000 Frio Rv at Concan, TX",Basin2_Upper,"""08196000""","USGS 08196000 Dry Frio Rv nr Reagan Wells, TX",Basin2_Upper
+Sabinal,"""08198000""","USGS 08198000 Sabinal Rv nr Sabinal, TX",Basin_3Lower,"""08198500""","USGS 08198500 Sabinal Rv at Sabinal, TX",Basin3_Upper,,,
